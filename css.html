@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .margin {
+      display: table;
+      width: 100%;
+    }
+
+    .margin>div+div {
+      /* border-right:1px solid #000; */
+    }
+
+    .margin>div {
+      display: table-cell;
+      background-color: aquamarine;
+      border-right: 1px solid #000;
+      text-align: center;
+      color: red;
+    }
+
+    .box1 {
+      width: 500px;
+      height: 500px;
+      background-color: bisque;
+      display: flex;
+      word-break: break-all;
+      word-wrap: break-word;
+      background-image: url(http://img.cdn.be-xxx.com/beats-site/images/works/001-1.png?v=910);
+      background-attachment: fixed;
+      background-size: cover;
+      overflow-y: scroll;
+    }
+
+    .box1::after {
+      content: '';
+      padding-top: 100%;
+    }
+
+    .content {
+      -webkit-transition: height 0.4s linear;
+      -o-transition: height 0.4s linear;
+      transition: height 0.4s linear;
+    }
+
+    .content .listItem {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .content .listItem>.item {
+      width: 33.33333333%;
+      background: url(http://img.cdn.be-xxx.com/beats-site/images/preloader.gif) center center no-repeat rgba(255, 255, 255, 0.5);
+    }
+
+    .content .listItem>.item img {
+      max-height: 500px;
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .loading {
+      text-align: center;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<!-- http://img.cdn.be-xxx.com/beats-site/images/works/001-1.png?v=910 -->
+
+<body style="display: none;">
+  <!-- <div class="margin">
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+    </div>
+    <div class="box1">33333333333333333333333333333333333333333</div> -->
+  <div class="content">
+    <div class="listItem">
+      <!-- <div class="item">
+        <img src="http://img.cdn.be-xxx.com/beats-site/images/works/016-1.png?v=415" />
+      </div>
+      <div class="item">
+        <img src="http://img.cdn.be-xxx.com/beats-site/images/works/016-1.png?v=415" />
+      </div>
+      <div class="item">
+        <img src="http://img.cdn.be-xxx.com/beats-site/images/works/016-1.png?v=415" />
+      </div> -->
+    </div>
+    <div class="loading" style="display:none;">加载中...</div>
+  </div>
+</body>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="worksJson.js"></script>
+<script>
+  var _worksJson = _worksJson.reverse()
+  $('body').fadeIn()
+  var contentBox = $('.content')
+  var listItemBox = $('.content .listItem')
+  var now = 1;											                  //初始页面显示分页数
+  var onePageNum = 9;										              //每点击加载数量（分页内容数量）
+  var totalNum = _worksJson.length;                  //总数据数
+  var pageCount = Math.ceil(totalNum / onePageNum);		//总分页数
+  Paginationlist()
+  //加载更多
+  // var loading = $('.loading');
+  // var clientHeight = document.documentElement.clientHeight; //浏览器高度
+  // var scrollHeight = document.body.scrollHeight; //body高度
+  // var scrollTop; //滑动距离顶部的距离
+  // var isEnd = false; //是否滑倒底部
+  // var distance = 50;  //距离视窗还用50的时候，开始触发；
+  // $(window).scroll(function () {
+  //   scrollTop = window.pageYOffset ||
+  //     document.documentElement.scrollTop ||
+  //     document.body.scrollTop
+  //   if (listItemBox.children().length === totalNum) return
+  //   if (isEnd) {
+  //     return;
+  //   }
+  //   if ((scrollTop + clientHeight) >= (scrollHeight - distance)) {
+  //     loading.show()
+  //     now++
+  //     Paginationlist()
+  //   }
+  // })
+
+  function Paginationlist() {
+    console.log(now)
+    var begin = (now - 1) * onePageNum;
+    for (var i = begin; i < begin + onePageNum; i++) {
+      if (i < totalNum) {
+        html =
+          '<div class="item">\
+             <img src="http://img.cdn.be-xxx.com/beats-site/images/works/'+ _worksJson[i].coverImage + '?v=415"/>\
+             </div>'
+        // $('.loading').hide()
+        // isEnd = false
+        listItemBox.append(html)
+      } else {
+        // loading.hide()
+        // isEnd = true
+      }
+    }
+  }
+
+  function scrollDirect(fn) {
+    var beforeScrollTop = document.body.scrollTop;
+    fn = fn || function () {
+    };
+    window.addEventListener("scroll", function (event) {
+      event = event || window.event;
+
+      var afterScrollTop = document.body.scrollTop;
+      delta = afterScrollTop - beforeScrollTop;
+      beforeScrollTop = afterScrollTop;
+
+      var scrollTop = $(this).scrollTop();
+      var scrollHeight = $(document).height();
+      var windowHeight = $(this).height();
+      if (scrollTop + windowHeight > scrollHeight - 10) {  //滚动到底部执行事件
+        fn('up');
+        return;
+      }
+      if (afterScrollTop < 10 || afterScrollTop > $(document.body).height - 10) {
+        fn('up');
+      } else {
+        if (Math.abs(delta) < 10) {
+          return false;
+        }
+        fn(delta > 0 ? "down" : "up");
+      }
+    }, false);
+  }
+  var upflag = 1;
+  var downflag = 1;
+  //scroll滑动,上滑和下滑只执行一次！
+  scrollDirect(function (direction) {
+    console.log(direction)
+    if (direction == "down") {
+      if (downflag) {
+        alert('下滑')
+        downflag = 0
+        upflag = 1
+      }
+    }
+    if (direction == "up") {
+      if (upflag) {
+        // alert('上滑')
+        if (listItemBox.children().length === totalNum){
+          upflag = 0
+          downflag = 0
+          return
+        }
+        now++
+        Paginationlist()
+      }
+    }
+  })
+</script>
+
+</html>
