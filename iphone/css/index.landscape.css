@@ -1,0 +1,60 @@
+/*-------------------------------------------------------- 默认css 针对假横屏（竖屏横过来看） --------------------------------------------------------------*/
+body{ background-color: #000;}
+section{ position: absolute; left: 0; top: 0; width: 1206px; height: 750px;}
+
+
+/*---------------------------------------- 15:9 android 微信 && 16:9 浏览器----------------------*/
+@media screen and (device-width:360px) and (max-height:540px), screen and (device-width:320px) and (max-height:470px), screen and (device-width:375px) and (max-height:560px), screen and (device-width:414px) and (max-height:630px){
+
+}
+
+/*---------------------------------------- 18:9 android && 苹果X 微信 ----------------------*/
+@media screen and (device-width:360px) and (min-height:600px), screen and (device-width:393px) and (min-height:660px), screen and (device-width:412px) and (min-height:720px),
+ screen and (device-width:375px) and (min-height:720px),screen and (device-width:414px) and (min-height:720px){
+
+}
+
+/*---------------------------------------- 18:9 android 浏览器----------------------*/
+@media screen and (device-width:360px) and (min-height:540px) and (max-height:560px), screen and (device-width:393px) and (min-height:600px) and (max-height:620px){
+	
+}
+
+/*---------------------------------------- 单独对 iphoneX 微信兼容----------------------*/
+@media screen and (device-width:375px) and (min-height:720px),screen and (device-width:414px) and (min-height:720px){
+
+}
+
+/*---------------------------------------- iphoneX 浏览器----------------------------------------------*/
+@media screen and (device-width:375px) and (min-height:630px) and (max-height:640px),screen and (device-width:414px) and (min-height:690px){
+
+}
+
+/*---------------------------------------- android----------------------*/
+@media screen and (device-width:360px), screen and (device-width:393px){
+
+}
+
+/*---------------------------------------- iphone ----------------------------------------------*/
+@media screen and (device-width:320px), screen and (device-width:375px), screen and (device-width:414px){
+
+}
+
+/*-------------------------------------------------------- 针对真横屏 --------------------------------------------------------------------------------------*/
+/*----------------------------------------iphone5----------------------*/
+@media screen and (orientation : landscape) and (min-width:568px){ 
+
+}
+/*----------------------------------------15：9----------------------*/
+@media screen and (orientation : landscape) and (min-width:598px){ 
+
+}
+
+/*----------------------------------------16：9----------------------*/
+@media screen and (orientation : landscape) and (min-width:640px){ 
+
+}
+
+/*----------------------------------------18:9----------------------*/
+@media screen and (orientation : landscape) and (min-width:720px){ 
+	
+}
