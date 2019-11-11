@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Document</title>
+  <title id="title">Document</title>
   <style>
     html,
     body {
@@ -52,6 +52,7 @@
       -webkit-transition: height 0.4s linear;
       -o-transition: height 0.4s linear;
       transition: height 0.4s linear;
+      display: none;
     }
 
     .content .listItem {
@@ -77,36 +78,65 @@
       text-align: center;
       font-size: 24px;
     }
+
+    .content2 {
+      width: 100%;
+      height: 100%;
+    }
   </style>
 </head>
 <!-- http://img.cdn.be-xxx.com/beats-site/images/works/001-1.png?v=910 -->
 
 <body style="display: none;">
-  <!-- <div class="margin">
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-      <div>5</div>
+  <div class="content2">
+    <div>
+      选择文件(可多选):
+      <input type="file" id="f1" multiple /><br /><br />
+      <button type="button" id="btn-submit">上 传</button>
     </div>
-    <div class="box1">33333333333333333333333333333333333333333</div> -->
-  <div class="content">
+  </div>
+  <!-- <div class="content">
     <div class="listItem">
-      <!-- <div class="item">
-        <img src="http://img.cdn.be-xxx.com/beats-site/images/works/016-1.png?v=415" />
-      </div>
-      <div class="item">
-        <img src="http://img.cdn.be-xxx.com/beats-site/images/works/016-1.png?v=415" />
-      </div>
-      <div class="item">
-        <img src="http://img.cdn.be-xxx.com/beats-site/images/works/016-1.png?v=415" />
-      </div> -->
     </div>
     <div class="loading" style="display:none;">加载中...</div>
-  </div>
+  </div> -->
 </body>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="worksJson.js"></script>
+<script>
+  document.getElementById('btn-submit').addEventListener('click', submitUpload)
+  function submitUpload() {
+    //获取文件
+    var files = document.getElementById('f1').files
+    if (!files.length) {
+      alert('请选择文件')
+      return
+    }
+    var fd = new FormData()
+    fd.append('title', '测试测试')
+    for (var i = 0; i < files.length; i++) {
+      fd.append('f1', files[i])
+    }
+
+    var xhr = new XMLHttpRequest()
+    xhr.open('POST', 'http://127.0.0.1:8080/', true)
+    xhr.onprogress = updateProgress
+    function updateProgress(event){
+      console.log(event)
+    }
+    xhr.send(fd)
+    xhr.onreadystatechange = function () {
+      console.log('state change', xhr.readyState)
+      if (xhr.readyState == 4 && this.status == 200) {
+        var obj = JSON.parse(xhr.responseText)
+        console.log(obj)
+        if (obj.fileUrl.length) {
+          alert('上传成功')
+        }
+      }
+    }
+  }
+</script>
 <script>
   var _worksJson = _worksJson.reverse()
   $('body').fadeIn()
@@ -201,7 +231,7 @@
     if (direction == "up") {
       if (upflag) {
         // alert('上滑')
-        if (listItemBox.children().length === totalNum){
+        if (listItemBox.children().length === totalNum) {
           upflag = 0
           downflag = 0
           return
